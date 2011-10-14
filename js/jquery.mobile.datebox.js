@@ -23,7 +23,7 @@
       calHighPicked: true,
       noAnimation: false,
       disableManualInput: false,
-
+      useEmptyForDisabled: true,
       disabled: false,
       wheelExists: false,
       swipeEnabled: true,
@@ -965,7 +965,14 @@
                   calmode.thisTheme = o.pickPageButtonTheme;
                 }
 
-                $("<div>"+String(calmode.today)+"</div>")
+                if(o.useEmptyForDisabled && skipThis){
+                  $("<div>"+String(calmode.today)+"</div>")
+                  .addClass('ui-datebox-griddate ui-datebox-griddate-empty')
+                  .attr('data-date', ((o.calWeekMode)?calmode.weekMode:calmode.today))
+                  .attr('data-theme', calmode.thisTheme)
+                  .appendTo(thisRow);
+                } else {
+                  $("<div>"+String(calmode.today)+"</div>")
                   .addClass('ui-datebox-griddate ui-corner-all')
                   .attr('data-date', ((o.calWeekMode)?calmode.weekMode:calmode.today))
                   .attr('data-theme', calmode.thisTheme)
@@ -983,7 +990,7 @@
                     self.input.trigger('datebox', {'method':'close'});
                   })
                   .css((skipThis)?'color':'nocolor', o.disabledDayColor);
-
+                }
                 calmode.today++;
               }
             }
